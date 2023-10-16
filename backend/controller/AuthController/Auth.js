@@ -3,9 +3,9 @@ const Auth = require("../../connection/model/AuthModel");
 
 /**
  * Signup Form for register a New User Details
- * @param {*} req 
- * @param {*} resp 
- * @returns 
+ * @param {*} req
+ * @param {*} resp
+ * @returns
  */
 const signUp = async (req, resp) => {
   try {
@@ -26,7 +26,9 @@ const signUp = async (req, resp) => {
     let user = new Auth({
       ...req.body,
     });
-    let result = await user.save().toObject();
+    
+    let result = await user.save();
+    result = result.toObject();
     delete result.password;
     resp.status(201).json(result);
   } catch (err) {
@@ -36,9 +38,9 @@ const signUp = async (req, resp) => {
 
 /**
  * Login Form User Can login by enter details
- * @param {*} req 
- * @param {*} resp 
- * @returns 
+ * @param {*} req
+ * @param {*} resp
+ * @returns
  */
 const login = async (req, resp) => {
   try {
@@ -56,6 +58,8 @@ const login = async (req, resp) => {
       } else {
         resp.status(404).json({ result: "Invalid credentials." });
       }
+    } else {
+      resp.status(404).json({ result: "No User Found" });
     }
   } catch (err) {
     resp.status(400).json({ message: err.message });
